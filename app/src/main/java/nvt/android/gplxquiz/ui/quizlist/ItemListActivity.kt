@@ -65,33 +65,12 @@ class ItemListActivity : AppCompatActivity() {
         }
 
         setupRecyclerView(item_list)
-        val quizList = XmlReader(this).readXml()
+
 //        Log.i("TuyNV", quizList.toString())
 
-        Single.just("1")
-            .map { saveDataToDb(quizList) }
-            .observeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-
     }
 
-    private fun saveDataToDb(quizList: List<QuizList>): Int {
-        val db = AppRoomDatabase.getInstance(this)
-        val gson = Gson()
-        quizList.forEach { item ->
-            db.quizListDao().insertAll(QuizListEntity(item.id, item.title, item.description, item.score, item.count))
-            Log.i("TuyNV", "Inset quiz list ${item.id}")
-            item.items.forEach { quiz ->
-                Log.i("TuyNV", "Inset quiz ${quiz.id}")
-                db.quizItemDao().insertAll(QuizItemEntity(quiz.id, item.id, quiz.title, gson.toJson(quiz.answer, List::class.java), quiz.result, quiz.tip, quiz.multiAnswer))
-            }
-        }
 
-        val result = db.quizListDao().getAll()
-        Log.i("TuyNV", result.toString())
-        return 0
-    }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
         recyclerView.adapter =
