@@ -11,7 +11,7 @@ abstract class AppRoomDatabase : RoomDatabase() {
     abstract fun quizItemDao(): QuizItemDao
 
     companion object {
-        private const val DB_NAME = "quiz_database"
+        const val DB_NAME = "quiz_database"
         private var instance: AppRoomDatabase? = null
 
         fun getInstance(context: Context): AppRoomDatabase {
