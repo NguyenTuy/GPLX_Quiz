@@ -3,6 +3,7 @@ package nvt.android.gplxquiz.repository
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,14 @@ class QuizRepository(private val application: Application) : CoroutineScope {
         val db = AppRoomDatabase.getInstance(application)
         quizItemDao = db.quizItemDao()
         quizListDao = db.quizListDao()
+    }
+
+    fun getAllQuizList(): LiveData<List<QuizListEntity>> {
+        return quizListDao.getAll()
+    }
+
+    fun getQuizListById(id: String): LiveData<QuizListEntity> {
+        return quizListDao.findById(id)
     }
 
     fun extractData() {

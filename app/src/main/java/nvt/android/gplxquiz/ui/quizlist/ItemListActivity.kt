@@ -2,7 +2,6 @@ package nvt.android.gplxquiz.ui.quizlist
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -10,10 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.google.gson.Gson
-import io.reactivex.Scheduler
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 
 import nvt.android.gplxquiz.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_item_list.*
@@ -43,10 +40,12 @@ class ItemListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    private var adapter: ItemListActivity.SimpleItemRecyclerViewAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
+        val itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel::class.java)
 
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -65,32 +64,35 @@ class ItemListActivity : AppCompatActivity() {
         }
 
         setupRecyclerView(item_list)
-
-//        Log.i("TuyNV", quizList.toString())
-
+        itemListViewModel.getDatLiveData.observe(this, Observer { adapter?.updateData(it) })
     }
 
 
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.adapter =
-            SimpleItemRecyclerViewAdapter(
+            adapter= SimpleItemRecyclerViewAdapter(
                 this,
-                DummyContent.ITEMS,
+                listOf(),
                 twoPane
             )
+        recyclerView.adapter = adapter
     }
 
     class SimpleItemRecyclerViewAdapter(private val parentActivity: ItemListActivity,
-                                        private val values: List<DummyContent.DummyItem>,
+                                        private var values: List<QuizListEntity>,
                                         private val twoPane: Boolean) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
         private val onClickListener: View.OnClickListener
 
+        fun updateData(data: List<QuizListEntity>) {
+            values = data
+            notifyDataSetChanged()
+        }
+
         init {
             onClickListener = View.OnClickListener { v ->
-                val item = v.tag as DummyContent.DummyItem
+                val item = v.tag as QuizListEntity
                 if (twoPane) {
                     val fragment = ItemDetailFragment()
                         .apply {
@@ -120,7 +122,7 @@ class ItemListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = values[position]
             holder.idView.text = item.id
-            holder.contentView.text = item.content
+            holder.contentView.text = item.title
 
             with(holder.itemView) {
                 tag = item

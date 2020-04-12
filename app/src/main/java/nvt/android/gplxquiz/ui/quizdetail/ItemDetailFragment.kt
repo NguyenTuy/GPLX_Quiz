@@ -5,55 +5,44 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import nvt.android.gplxquiz.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 import nvt.android.gplxquiz.R
+import nvt.android.gplxquiz.databinding.ItemDetailBinding
+import nvt.android.gplxquiz.db.QuizListEntity
 
-/**
- * A fragment representing a single Item detail screen.
- * This fragment is either contained in a [ItemListActivity]
- * in two-pane mode (on tablets) or a [ItemDetailActivity]
- * on handsets.
- */
 class ItemDetailFragment : Fragment() {
-
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private var item: DummyContent.DummyItem? = null
+    private var dataBinding: ItemDetailBinding? = null
+    private var viewModel: ItemDetailViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel = ViewModelProviders.of(this).get(ItemDetailViewModel::class.java)
+
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
-                // Load the dummy content specified by the fragment
-                // arguments. In a real-world scenario, use a Loader
-                // to load content from a content provider.
-                item = DummyContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
-                activity?.toolbar_layout?.title = item?.content
+                it.getString(ARG_ITEM_ID)?.let { id -> viewModel?.setItem(id) }
             }
         }
+
+        viewModel?.setDataDone?.observe(this, Observer { activity?.toolbar_layout?.title = it.title
+            viewModel?.quizListEntity?.set(it)
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.item_detail, container, false)
-
-        // Show the dummy content as text in a TextView.
-        item?.let {
-            rootView.item_detail.text = it.details
-        }
-
-        return rootView
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.item_detail, container, false)
+        dataBinding?.viewModel = viewModel
+        return dataBinding?.root
     }
 
     companion object {
-        /**
-         * The fragment argument representing the item ID that this fragment
-         * represents.
-         */
         const val ARG_ITEM_ID = "item_id"
     }
 }
