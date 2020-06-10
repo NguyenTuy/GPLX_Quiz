@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import nvt.android.gplxquiz.R
-import nvt.android.gplxquiz.ui.quizlist.ItemListActivity
+import nvt.android.gplxquiz.ui.quizlist.QuizListActivity
 
 class SplashScreen : AppCompatActivity() {
     private lateinit var splashViewModel: SplashViewModel
@@ -17,7 +17,7 @@ class SplashScreen : AppCompatActivity() {
 
         splashViewModel = ViewModelProviders.of(this).get(SplashViewModel::class.java)
         splashViewModel.loadDataDoneLiveData.observe(this, Observer {
-            startActivity(Intent(this, ItemListActivity::class.java))
+            startActivity(Intent(this, QuizListActivity::class.java))
             finish()
         })
 

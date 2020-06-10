@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="nvt.android.gplxquiz.ui.quizdetail.ItemDetailViewModel" />
+            type="nvt.android.gplxquiz.ui.quizlist.QuizListDetailViewModel" />
     </data>
 
     <LinearLayout

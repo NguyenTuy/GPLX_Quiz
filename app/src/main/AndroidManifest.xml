@@ -20,18 +20,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.quizlist.ItemListActivity"
+            android:name=".ui.quizlist.QuizListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ui.quizdetail.ItemDetailActivity"
+            android:name=".ui.quizlist.QuizListDetailActivity"
             android:label="@string/title_item_detail"
-            android:parentActivityName=".ui.quizlist.ItemListActivity"
+            android:parentActivityName=".ui.quizlist.QuizListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="nvt.android.gplxquiz.ui.quizlist.ItemListActivity" />
+                android:value="nvt.android.gplxquiz.ui.quizlist.QuizListActivity" />
         </activity>
     </application>
 

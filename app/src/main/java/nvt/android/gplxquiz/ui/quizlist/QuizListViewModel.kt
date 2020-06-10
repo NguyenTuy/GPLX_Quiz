@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import nvt.android.gplxquiz.db.QuizListEntity
 import nvt.android.gplxquiz.repository.QuizRepository
 
-class ItemListViewModel(application: Application) : AndroidViewModel(application) {
+class QuizListViewModel(application: Application) : AndroidViewModel(application) {
     private val quizRepository = QuizRepository(application)
     val getDatLiveData: LiveData<List<QuizListEntity>>
 

@@ -1,4 +1,4 @@
-package nvt.android.gplxquiz.ui.quizdetail
+package nvt.android.gplxquiz.ui.quizlist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,21 +8,18 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import nvt.android.gplxquiz.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_item_detail.*
-import kotlinx.android.synthetic.main.item_detail.view.*
 import nvt.android.gplxquiz.R
 import nvt.android.gplxquiz.databinding.ItemDetailBinding
-import nvt.android.gplxquiz.db.QuizListEntity
 
-class ItemDetailFragment : Fragment() {
+class QuizListDetailFragment : Fragment() {
     private var dataBinding: ItemDetailBinding? = null
-    private var viewModel: ItemDetailViewModel? = null
+    private var viewModel: QuizListDetailViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(ItemDetailViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(QuizListDetailViewModel::class.java)
 
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {

@@ -12,40 +12,33 @@ import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
-import nvt.android.gplxquiz.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_item_list.*
 import kotlinx.android.synthetic.main.item_list_content.view.*
 import kotlinx.android.synthetic.main.item_list.*
-import nvt.android.gplxquiz.ui.quizdetail.ItemDetailActivity
-import nvt.android.gplxquiz.ui.quizdetail.ItemDetailFragment
 import nvt.android.gplxquiz.R
-import nvt.android.gplxquiz.db.AppRoomDatabase
-import nvt.android.gplxquiz.db.QuizItemEntity
 import nvt.android.gplxquiz.db.QuizListEntity
-import nvt.android.gplxquiz.db.XmlReader
-import nvt.android.gplxquiz.dto.QuizList
 
 /**
  * An activity representing a list of Pings. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a [ItemDetailActivity] representing
+ * lead to a [QuizListDetailActivity] representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-class ItemListActivity : AppCompatActivity() {
+class QuizListActivity : AppCompatActivity() {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private var twoPane: Boolean = false
-    private var adapter: ItemListActivity.SimpleItemRecyclerViewAdapter? = null
+    private var adapter: QuizListActivity.SimpleItemRecyclerViewAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
-        val itemListViewModel = ViewModelProviders.of(this).get(ItemListViewModel::class.java)
+        val itemListViewModel = ViewModelProviders.of(this).get(QuizListViewModel::class.java)
 
         setSupportActionBar(toolbar)
         toolbar.title = title
@@ -78,7 +71,7 @@ class ItemListActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    class SimpleItemRecyclerViewAdapter(private val parentActivity: ItemListActivity,
+    class SimpleItemRecyclerViewAdapter(private val parentActivity: QuizListActivity,
                                         private var values: List<QuizListEntity>,
                                         private val twoPane: Boolean) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
@@ -94,10 +87,10 @@ class ItemListActivity : AppCompatActivity() {
             onClickListener = View.OnClickListener { v ->
                 val item = v.tag as QuizListEntity
                 if (twoPane) {
-                    val fragment = ItemDetailFragment()
+                    val fragment = QuizListDetailFragment()
                         .apply {
                         arguments = Bundle().apply {
-                            putString(ItemDetailFragment.ARG_ITEM_ID, item.id)
+                            putString(QuizListDetailFragment.ARG_ITEM_ID, item.id)
                         }
                     }
                     parentActivity.supportFragmentManager
@@ -105,8 +98,8 @@ class ItemListActivity : AppCompatActivity() {
                             .replace(R.id.item_detail_container, fragment)
                             .commit()
                 } else {
-                    val intent = Intent(v.context, ItemDetailActivity::class.java).apply {
-                        putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id)
+                    val intent = Intent(v.context, QuizListDetailActivity::class.java).apply {
+                        putExtra(QuizListDetailFragment.ARG_ITEM_ID, item.id)
                     }
                     v.context.startActivity(intent)
                 }

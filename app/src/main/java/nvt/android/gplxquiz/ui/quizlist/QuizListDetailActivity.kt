@@ -1,4 +1,4 @@
-package nvt.android.gplxquiz.ui.quizdetail
+package nvt.android.gplxquiz.ui.quizlist
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,15 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_item_detail.*
 import nvt.android.gplxquiz.R
-import nvt.android.gplxquiz.ui.quizlist.ItemListActivity
 
 /**
  * An activity representing a single Item detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a [ItemListActivity].
+ * in a [QuizListActivity].
  */
-class ItemDetailActivity : AppCompatActivity() {
+class QuizListDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,12 +41,12 @@ class ItemDetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            val fragment = ItemDetailFragment()
+            val fragment = QuizListDetailFragment()
                 .apply {
                 arguments = Bundle().apply {
                     putString(
-                        ItemDetailFragment.ARG_ITEM_ID,
-                            intent.getStringExtra(ItemDetailFragment.ARG_ITEM_ID))
+                        QuizListDetailFragment.ARG_ITEM_ID,
+                            intent.getStringExtra(QuizListDetailFragment.ARG_ITEM_ID))
                 }
             }
 
@@ -66,7 +65,7 @@ class ItemDetailActivity : AppCompatActivity() {
                     //
                     // http://developer.android.com/design/patterns/navigation.html#up-vs-back
 
-                    navigateUpTo(Intent(this, ItemListActivity::class.java))
+                    navigateUpTo(Intent(this, QuizListActivity::class.java))
                     true
                 }
                 else -> super.onOptionsItemSelected(item)
